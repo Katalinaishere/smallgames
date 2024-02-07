@@ -1,0 +1,77 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class EnhancedGuessingGame {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        
+        System.out.println("Welcome to the Enhanced Guessing Game!");
+        System.out.println("Choose your difficulty level:");
+        System.out.println("1. Easy (1-50)");
+        System.out.println("2. Medium (1-100)");
+        System.out.println("3. Hard (1-200)");
+        System.out.print("Enter your choice: ");
+        int choice = scanner.nextInt();
+
+        int upperBound = 0;
+        int maxAttempts = 0;
+
+        switch (choice) {
+            case 1:
+                upperBound = 50;
+                maxAttempts = 8;
+                break;
+            case 2:
+                upperBound = 100;
+                maxAttempts = 6;
+                break;
+            case 3:
+                upperBound = 200;
+                maxAttempts = 4;
+                break;
+            default:
+                System.out.println("Invalid choice. Setting to medium difficulty.");
+                upperBound = 100;
+                maxAttempts = 6;
+        }
+
+        int secretNumber = random.nextInt(upperBound) + 1; // Generate a random number between 1 and upperBound
+        int attempts = 0;
+        int guess = 0;
+        
+        System.out.println("Try to guess the secret number between 1 and " + upperBound + ".");
+        System.out.println("You have " + maxAttempts + " attempts.");
+
+        while (guess != secretNumber && attempts < maxAttempts) {
+            System.out.print("Enter your guess: ");
+            guess = scanner.nextInt();
+            attempts++;
+
+            if (guess < secretNumber) {
+                System.out.println("Too low!");
+            } else if (guess > secretNumber) {
+                System.out.println("Too high!");
+            } else {
+                System.out.println("Congratulations! You guessed the secret number " + secretNumber + " in " + attempts + " attempts!");
+                break;
+            }
+
+            if (attempts < maxAttempts) {
+                int remainingAttempts = maxAttempts - attempts;
+                System.out.println("You have " + remainingAttempts + " attempts left.");
+            }
+
+            int difference = Math.abs(secretNumber - guess);
+            if (difference <= 5 && difference > 0) {
+                System.out.println("Hint: You are very close to the secret number!");
+            }
+        }
+
+        if (guess != secretNumber) {
+            System.out.println("Sorry, you've used all your attempts. The secret number was: " + secretNumber);
+        }
+
+        scanner.close();
+    }
+}
